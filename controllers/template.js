@@ -20,7 +20,7 @@ export const getAllTemplates = async (req, res) => {
     }
 };
 
-export const getTemplateById = async (req, res) => {
+export const getTemplate = async (req, res) => {
     try {
         const template = await Template.findById(req.params.id);
         if (template) {
@@ -34,20 +34,22 @@ export const getTemplateById = async (req, res) => {
 };
 
 export const updateTemplate = async (req, res) => {
+    const { id } = req.params;
+    const { name, fields } = req.body;
     try {
-        const {name, fields} = req.body;
-        const updatedTemplate = await Template.findByIdAndUpdate(req.params.id, {name, fields}, { new: true });
-        if (updatedTemplate) {
-            res.status(200).json(updatedTemplate);
-        } else {
-            res.status(404).json({ message: 'Template not found' });
+        const template = await Template.findById(id);
+        if (!template) {
+            return res.status(404).json({ message: 'Template not found' });
         }
+        if (name) template.name = name;
+        if (fields) template.fields = fields;
+        const updatedTemplate = await template.save();
+        res.status(200).json(updatedTemplate);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
 
-// Delete a template by ID
 export const deleteTemplate = async (req, res) => {
     try {
         const deletedTemplate = await Template.findByIdAndDelete(req.params.id);

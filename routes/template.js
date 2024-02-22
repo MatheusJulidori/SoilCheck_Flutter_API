@@ -1,25 +1,16 @@
 import { Router } from "express";
+import { getAllTemplates,createTemplate,getTemplate,deleteTemplate,updateTemplate } from "../controllers/template.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-    res.send("Return all checklist templates");
-} );
+router.get("/", getAllTemplates);
 
-router.get("/:id", (req, res) => {
-    res.send(`Return checklist template with id ${req.params.id}`);
-})
+router.get("/:id", getTemplate)
 
-router.post("/", (req, res) => {
-    res.send("Create a new checklist template");
-})
+router.post("/", createTemplate)
 
-router.put("/:id", (req, res) => {
-    res.send(`Update checklist template with id ${req.params.id}`);
-})
+router.put("/:id", updateTemplate)
 
-router.delete("/:id", (req, res) => {
-    res.send(`Delete checklist template with id ${req.params.id}`);
-})
+router.delete("/:id", deleteTemplate)
 
 export default router;
