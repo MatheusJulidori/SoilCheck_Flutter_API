@@ -49,7 +49,10 @@ export const updateUser = async (req, res) => {
         }
         if (username) user.username = username;
         if (name) user.name = name;
-        if (password) user.password = password;
+        if (password) {
+            const encryptedPassword = await bcrypt.hash(password, 10);
+            user.password = encryptedPassword;
+        }
         if (isAdmin) user.isAdmin = isAdmin;
         const updatedUser = await user.save();
         res.status(200).json(updatedUser);
