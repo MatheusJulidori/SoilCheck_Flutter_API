@@ -1,25 +1,16 @@
 import { Router } from "express";
+import { getAllChecklists,createChecklist,getChecklist,deleteChecklist,updateChecklist } from "../controllers/checklist.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-    res.send("Return all checklists");
-} );
+router.get("/", getAllChecklists);
 
-router.get("/:id", (req, res) => {
-    res.send(`Return checklist with id ${req.params.id}`);
-})
+router.get("/:id", getChecklist)
 
-router.post("/", (req, res) => {
-    res.send("Create a new checklist");
-})
+router.post("/", createChecklist)
 
-router.put("/:id", (req, res) => {
-    res.send(`Update checklist with id ${req.params.id}`);
-})
+router.put("/:id",updateChecklist)
 
-router.delete("/:id", (req, res) => {
-    res.send(`Delete checklist with id ${req.params.id}`);
-})
+router.delete("/:id", deleteChecklist)
 
 export default router;

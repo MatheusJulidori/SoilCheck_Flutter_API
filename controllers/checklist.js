@@ -20,7 +20,7 @@ export const getAllChecklists = async (req, res) => {
     }
 }
 
-export const getChecklistById = async (req, res) => {
+export const getChecklist = async (req, res) => {
     try {
         const checklist = await Checklist.findById(req.params.id);
         if (checklist) {
@@ -34,9 +34,22 @@ export const getChecklistById = async (req, res) => {
 }
 
 export const updateChecklist = async (req, res) => {
+    const { id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields } = req.body;
+    const {id} = req.params;
     try {
-        const { id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields } = req.body;
-        const updatedChecklist = await Checklist.findByIdAndUpdate(req.params.id, { id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields }, { new: true });
+        const checklist = await Checklist.findById(id);
+        if (!checklist) {
+            return res.status(404).json({ message: 'Checklist not found' });
+        }
+        if (id_radio) checklist.id_radio = id_radio;
+        if (id_fazenda) checklist.id_fazenda = id
+        if (id_pivo) checklist.id_pivo = id_pivo;
+        if (id_cliente) checklist.id_cliente = id_cliente;
+        if (id_template) checklist.id_template = id_template;
+        if (id_responsavel) checklist.id_responsavel = id_responsavel;
+        if (fields) checklist.fields = fields;
+        checklist.data_atualizacao = Date.now();
+        const updatedChecklist = await checklist.save();
         if (updatedChecklist) {
             res.status(200).json(updatedChecklist);
         } else {
