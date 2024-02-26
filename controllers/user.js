@@ -18,7 +18,8 @@ export const createUser = async (req, res) => {
         username,
         name,
         password: encryptedPassword,
-        isAdmin
+        isAdmin,
+        isActive: true
     });
     try {
         await newUser.save();
@@ -41,7 +42,7 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { username, name, password, isAdmin } = req.body;
+    const { username, name, password, isAdmin, isActive } = req.body;
     try {
         const user = await User.findById(id);
         if (!user) {
@@ -54,6 +55,7 @@ export const updateUser = async (req, res) => {
             user.password = encryptedPassword;
         }
         if (isAdmin) user.isAdmin = isAdmin;
+        if (isActive) user.isActive = isActive;
         const updatedUser = await user.save();
         res.status(200).json(updatedUser);
     } catch (error) {
@@ -85,5 +87,22 @@ export const loginUser = async (req, res) => {
     } catch (err) {
         console.log(err.message);
         res.status(401).json({ message: err.message })
+    }
+}
+
+export const changePassword = async (req,res) => {
+    const { id } = req.params;
+    const { oldPassword, newPassword } = req.body;
+    try {
+        const user = await User.findById(id);
+        if (!user) throw new Error('User not found');
+        const validPassword = await bcrypt.compare(oldPassword, user.password);
+        if (!validPassword) throw new Error('Invalid password');
+        const encryptedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = encryptedPassword;
+        const updatedUser = await user.save();
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        res.status(401).json({ message: err.message });
     }
 }

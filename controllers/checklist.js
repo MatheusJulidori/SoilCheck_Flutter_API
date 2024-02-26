@@ -72,3 +72,12 @@ export const deleteChecklist = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const countChecks = async (req, res) => {
+    try {
+        const count = await Checklist.countDocuments({ id_responsavel: req.params.id });
+        res.status(200).json(count);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

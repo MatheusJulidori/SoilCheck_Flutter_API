@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllUsers,createUser,getUser,deleteUser,updateUser,loginUser } from "../controllers/user.js";
+import { getAllUsers,createUser,getUser,deleteUser,updateUser,loginUser,changePassword } from "../controllers/user.js";
 
 const router = Router();
 
@@ -15,5 +15,6 @@ router.delete("/:id",deleteUser)
 
 router.post("/login", loginUser)
 
+router.put("/changePassword/:id", changePassword)
 
 export default router;
