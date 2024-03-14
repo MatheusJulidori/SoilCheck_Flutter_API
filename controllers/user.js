@@ -54,8 +54,8 @@ export const updateUser = async (req, res) => {
             const encryptedPassword = await bcrypt.hash(password, 10);
             user.password = encryptedPassword;
         }
-        if (isAdmin) user.isAdmin = isAdmin;
-        if (isActive) user.isActive = isActive;
+        if (isAdmin != undefined) user.isAdmin = isAdmin;
+        if (isActive != undefined) user.isActive = isActive;
         const updatedUser = await user.save();
         res.status(200).json(updatedUser);
     } catch (error) {
@@ -79,6 +79,7 @@ export const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ username: username });
         if (!user) throw new Error('User not found');
+        if (!user.isActive) throw new Error('User is not active')
 
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) throw new Error('Invalid password');
