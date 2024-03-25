@@ -2,8 +2,8 @@ import Checklist from '../models/checklist.js';
 
 export const createChecklist = async (req, res) => {
     try {
-        const { id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields } = req.body;
-        const newChecklist = new Checklist({ id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields });
+        const { id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields, observacoes_gerais, revisao } = req.body;
+        const newChecklist = new Checklist({ id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields, observacoes_gerais, revisao });
         const savedChecklist = await newChecklist.save();
         res.status(201).json(savedChecklist);
     } catch (error) {
@@ -34,7 +34,7 @@ export const getChecklist = async (req, res) => {
 }
 
 export const updateChecklist = async (req, res) => {
-    const { id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields } = req.body;
+    const { id_radio, id_fazenda, id_pivo, id_cliente, id_template, id_responsavel, fields, observacoes_gerais, revisao } = req.body;
     const {id} = req.params;
     try {
         const checklist = await Checklist.findById(id);
@@ -48,6 +48,8 @@ export const updateChecklist = async (req, res) => {
         if (id_template) checklist.id_template = id_template;
         if (id_responsavel) checklist.id_responsavel = id_responsavel;
         if (fields) checklist.fields = fields;
+        if (observacoes_gerais) checklist.observacoes_gerais = observacoes_gerais;
+        if (revisao) checklist.revisao = revisao;
         checklist.data_atualizacao = Date.now();
         const updatedChecklist = await checklist.save();
         if (updatedChecklist) {

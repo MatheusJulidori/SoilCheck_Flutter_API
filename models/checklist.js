@@ -7,6 +7,8 @@ const checklistSchema = new mongoose.Schema({
   id_cliente: {type: String},
   id_template: {type: String, required: true},
   id_responsavel: {type: String, required: true},
+  observacoes_gerais: {type: String},
+  revisao: {type: String},
   data_criacao: { type: Date, default: Date.now },
   data_atualizacao: { type: Date, default: Date.now },
   fields: { type: Schema.Types.Mixed, required: true},
