@@ -42,7 +42,7 @@ export const updateChecklist = async (req, res) => {
             return res.status(404).json({ message: 'Checklist not found' });
         }
         if (id_radio) checklist.id_radio = id_radio;
-        if (id_fazenda) checklist.id_fazenda = id
+        if (id_fazenda) checklist.id_fazenda = id_fazenda;
         if (id_pivo) checklist.id_pivo = id_pivo;
         if (id_cliente) checklist.id_cliente = id_cliente;
         if (id_template) checklist.id_template = id_template;
