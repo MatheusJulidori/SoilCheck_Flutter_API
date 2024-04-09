@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - mongodb_data:/data/db
+    env_file:
+      - mongo.env
+    networks:
+      - app-network
+
+  nodeapp:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - node.env
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
